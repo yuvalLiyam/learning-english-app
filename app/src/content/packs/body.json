@@ -1,0 +1,99 @@
+{
+ "id": "body",
+ "name": "Body",
+ "name_he": "גוף",
+ "known": true,
+ "order": 3,
+ "words": [
+  {
+   "id": "head",
+   "en": "head",
+   "he": "ראש",
+   "he_find": "מצא את הראש!",
+   "category": "body",
+   "image": "images/body/head.png",
+   "source": "1F642"
+  },
+  {
+   "id": "eye",
+   "en": "eye",
+   "he": "עין",
+   "he_find": "מצא את העין!",
+   "category": "body",
+   "image": "images/body/eye.png",
+   "source": "1F441"
+  },
+  {
+   "id": "nose",
+   "en": "nose",
+   "he": "אף",
+   "he_find": "מצא את האף!",
+   "category": "body",
+   "image": "images/body/nose.png",
+   "source": "1F443"
+  },
+  {
+   "id": "mouth",
+   "en": "mouth",
+   "he": "פה",
+   "he_find": "מצא את הפה!",
+   "category": "body",
+   "image": "images/body/mouth.png",
+   "source": "1F444"
+  },
+  {
+   "id": "ear",
+   "en": "ear",
+   "he": "אוזן",
+   "he_find": "מצא את האוזן!",
+   "category": "body",
+   "image": "images/body/ear.png",
+   "source": "1F442"
+  },
+  {
+   "id": "hand",
+   "en": "hand",
+   "he": "יד",
+   "he_find": "מצא את היד!",
+   "category": "body",
+   "image": "images/body/hand.png",
+   "source": "270B"
+  },
+  {
+   "id": "foot",
+   "en": "foot",
+   "he": "כף רגל",
+   "he_find": "מצא את כף הרגל!",
+   "category": "body",
+   "image": "images/body/foot.png",
+   "source": "1F9B6"
+  },
+  {
+   "id": "leg",
+   "en": "leg",
+   "he": "רגל",
+   "he_find": "מצא את הרגל!",
+   "category": "body",
+   "image": "images/body/leg.png",
+   "source": "1F9B5"
+  },
+  {
+   "id": "arm",
+   "en": "arm",
+   "he": "זרוע",
+   "he_find": "מצא את הזרוע!",
+   "category": "body",
+   "image": "images/body/arm.png",
+   "source": "1F4AA"
+  },
+  {
+   "id": "tooth",
+   "en": "tooth",
+   "he": "שן",
+   "he_find": "מצא את השן!",
+   "category": "body",
+   "image": "images/body/tooth.png",
+   "source": "1F9B7"
+  }
+ ]
+}

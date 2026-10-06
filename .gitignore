@@ -1,0 +1,6 @@
+node_modules/
+dist/
+dev-dist/
+phase0/
+app/public/images/_tmp/
+.DS_Store

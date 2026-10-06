@@ -1,0 +1,99 @@
+{
+ "id": "numbers",
+ "name": "Numbers",
+ "name_he": "מספרים",
+ "known": true,
+ "order": 1,
+ "words": [
+  {
+   "id": "n1",
+   "en": "one",
+   "he": "אחת",
+   "he_find": "מצא את אחת!",
+   "category": "numbers",
+   "image": "images/numbers/n1.png",
+   "source": "svg:number:1"
+  },
+  {
+   "id": "n2",
+   "en": "two",
+   "he": "שתיים",
+   "he_find": "מצא את שתיים!",
+   "category": "numbers",
+   "image": "images/numbers/n2.png",
+   "source": "svg:number:2"
+  },
+  {
+   "id": "n3",
+   "en": "three",
+   "he": "שלוש",
+   "he_find": "מצא את שלוש!",
+   "category": "numbers",
+   "image": "images/numbers/n3.png",
+   "source": "svg:number:3"
+  },
+  {
+   "id": "n4",
+   "en": "four",
+   "he": "ארבע",
+   "he_find": "מצא את ארבע!",
+   "category": "numbers",
+   "image": "images/numbers/n4.png",
+   "source": "svg:number:4"
+  },
+  {
+   "id": "n5",
+   "en": "five",
+   "he": "חמש",
+   "he_find": "מצא את חמש!",
+   "category": "numbers",
+   "image": "images/numbers/n5.png",
+   "source": "svg:number:5"
+  },
+  {
+   "id": "n6",
+   "en": "six",
+   "he": "שש",
+   "he_find": "מצא את שש!",
+   "category": "numbers",
+   "image": "images/numbers/n6.png",
+   "source": "svg:number:6"
+  },
+  {
+   "id": "n7",
+   "en": "seven",
+   "he": "שבע",
+   "he_find": "מצא את שבע!",
+   "category": "numbers",
+   "image": "images/numbers/n7.png",
+   "source": "svg:number:7"
+  },
+  {
+   "id": "n8",
+   "en": "eight",
+   "he": "שמונה",
+   "he_find": "מצא את שמונה!",
+   "category": "numbers",
+   "image": "images/numbers/n8.png",
+   "source": "svg:number:8"
+  },
+  {
+   "id": "n9",
+   "en": "nine",
+   "he": "תשע",
+   "he_find": "מצא את תשע!",
+   "category": "numbers",
+   "image": "images/numbers/n9.png",
+   "source": "svg:number:9"
+  },
+  {
+   "id": "n10",
+   "en": "ten",
+   "he": "עשר",
+   "he_find": "מצא את עשר!",
+   "category": "numbers",
+   "image": "images/numbers/n10.png",
+   "source": "svg:number:10"
+  }
+ ]
+}

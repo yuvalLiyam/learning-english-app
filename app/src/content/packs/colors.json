@@ -1,0 +1,109 @@
+{
+ "id": "colors",
+ "name": "Colors",
+ "name_he": "צבעים",
+ "known": true,
+ "order": 0,
+ "words": [
+  {
+   "id": "red",
+   "en": "red",
+   "he": "אדום",
+   "he_find": "מצא את הבלון האדום!",
+   "category": "colors",
+   "image": "images/colors/red.svg",
+   "source": "svg:color:#e53935",
+   "color": "#e53935"
+  },
+  {
+   "id": "blue",
+   "en": "blue",
+   "he": "כחול",
+   "he_find": "מצא את הבלון הכחול!",
+   "category": "colors",
+   "image": "images/colors/blue.svg",
+   "source": "svg:color:#1e88e5",
+   "color": "#1e88e5"
+  },
+  {
+   "id": "yellow",
+   "en": "yellow",
+   "he": "צהוב",
+   "he_find": "מצא את הבלון הצהוב!",
+   "category": "colors",
+   "image": "images/colors/yellow.svg",
+   "source": "svg:color:#fdd835",
+   "color": "#fdd835"
+  },
+  {
+   "id": "green",
+   "en": "green",
+   "he": "ירוק",
+   "he_find": "מצא את הבלון הירוק!",
+   "category": "colors",
+   "image": "images/colors/green.svg",
+   "source": "svg:color:#43a047",
+   "color": "#43a047"
+  },
+  {
+   "id": "orange",
+   "en": "orange",
+   "he": "כתום",
+   "he_find": "מצא את הבלון הכתום!",
+   "category": "colors",
+   "image": "images/colors/orange.svg",
+   "source": "svg:color:#fb8c00",
+   "color": "#fb8c00"
+  },
+  {
+   "id": "purple",
+   "en": "purple",
+   "he": "סגול",
+   "he_find": "מצא את הבלון הסגול!",
+   "category": "colors",
+   "image": "images/colors/purple.svg",
+   "source": "svg:color:#8e24aa",
+   "color": "#8e24aa"
+  },
+  {
+   "id": "pink",
+   "en": "pink",
+   "he": "ורוד",
+   "he_find": "מצא את הבלון הוורוד!",
+   "category": "colors",
+   "image": "images/colors/pink.svg",
+   "source": "svg:color:#ec407a",
+   "color": "#ec407a"
+  },
+  {
+   "id": "black",
+   "en": "black",
+   "he": "שחור",
+   "he_find": "מצא את הבלון השחור!",
+   "category": "colors",
+   "image": "images/colors/black.svg",
+   "source": "svg:color:#212121",
+   "color": "#212121"
+  },
+  {
+   "id": "white",
+   "en": "white",
+   "he": "לבן",
+   "he_find": "מצא את הבלון הלבן!",
+   "category": "colors",
+   "image": "images/colors/white.svg",
+   "source": "svg:color:#fafafa",
+   "color": "#fafafa"
+  },
+  {
+   "id": "brown",
+   "en": "brown",
+   "he": "חום",
+   "he_find": "מצא את הבלון החום!",
+   "category": "colors",
+   "image": "images/colors/brown.svg",
+   "source": "svg:color:#6d4c41",
+   "color": "#6d4c41"
+  }
+ ]
+}

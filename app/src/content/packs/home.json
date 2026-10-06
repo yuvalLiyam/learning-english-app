@@ -1,0 +1,99 @@
+{
+ "id": "home",
+ "name": "Home & Toys",
+ "name_he": "בית וצעצועים",
+ "known": false,
+ "order": 9,
+ "words": [
+  {
+   "id": "bed",
+   "en": "bed",
+   "he": "מיטה",
+   "he_find": "מצא את המיטה!",
+   "category": "home",
+   "image": "images/home/bed.png",
+   "source": "1F6CF"
+  },
+  {
+   "id": "chair",
+   "en": "chair",
+   "he": "כיסא",
+   "he_find": "מצא את הכיסא!",
+   "category": "home",
+   "image": "images/home/chair.png",
+   "source": "1FA91"
+  },
+  {
+   "id": "door",
+   "en": "door",
+   "he": "דלת",
+   "he_find": "מצא את הדלת!",
+   "category": "home",
+   "image": "images/home/door.png",
+   "source": "1F6AA"
+  },
+  {
+   "id": "window",
+   "en": "window",
+   "he": "חלון",
+   "he_find": "מצא את החלון!",
+   "category": "home",
+   "image": "images/home/window.png",
+   "source": "1FA9F"
+  },
+  {
+   "id": "ball",
+   "en": "ball",
+   "he": "כדור",
+   "he_find": "מצא את הכדור!",
+   "category": "home",
+   "image": "images/home/ball.png",
+   "source": "26BD"
+  },
+  {
+   "id": "teddy",
+   "en": "teddy bear",
+   "he": "דובי",
+   "he_find": "מצא את הדובי!",
+   "category": "home",
+   "image": "images/home/teddy.png",
+   "source": "1F9F8"
+  },
+  {
+   "id": "book",
+   "en": "book",
+   "he": "ספר",
+   "he_find": "מצא את הספר!",
+   "category": "home",
+   "image": "images/home/book.png",
+   "source": "1F4D6"
+  },
+  {
+   "id": "balloon",
+   "en": "balloon",
+   "he": "בלון",
+   "he_find": "מצא את הבלון!",
+   "category": "home",
+   "image": "images/home/balloon.png",
+   "source": "1F388"
+  },
+  {
+   "id": "kite",
+   "en": "kite",
+   "he": "עפיפון",
+   "he_find": "מצא את העפיפון!",
+   "category": "home",
+   "image": "images/home/kite.png",
+   "source": "1FA81"
+  },
+  {
+   "id": "blocks",
+   "en": "blocks",
+   "he": "קוביות",
+   "he_find": "מצא את הקוביות!",
+   "category": "home",
+   "image": "images/home/blocks.png",
+   "source": "1F9F1"
+  }
+ ]
+}

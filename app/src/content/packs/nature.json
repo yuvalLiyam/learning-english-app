@@ -1,0 +1,99 @@
+{
+ "id": "nature",
+ "name": "Nature",
+ "name_he": "טבע",
+ "known": false,
+ "order": 10,
+ "words": [
+  {
+   "id": "sun",
+   "en": "sun",
+   "he": "שמש",
+   "he_find": "מצא את השמש!",
+   "category": "nature",
+   "image": "images/nature/sun.png",
+   "source": "2600"
+  },
+  {
+   "id": "moon",
+   "en": "moon",
+   "he": "ירח",
+   "he_find": "מצא את הירח!",
+   "category": "nature",
+   "image": "images/nature/moon.png",
+   "source": "1F319"
+  },
+  {
+   "id": "star",
+   "en": "star",
+   "he": "כוכב",
+   "he_find": "מצא את הכוכב!",
+   "category": "nature",
+   "image": "images/nature/star.png",
+   "source": "2B50"
+  },
+  {
+   "id": "tree",
+   "en": "tree",
+   "he": "עץ",
+   "he_find": "מצא את העץ!",
+   "category": "nature",
+   "image": "images/nature/tree.png",
+   "source": "1F333"
+  },
+  {
+   "id": "flower",
+   "en": "flower",
+   "he": "פרח",
+   "he_find": "מצא את הפרח!",
+   "category": "nature",
+   "image": "images/nature/flower.png",
+   "source": "1F33C"
+  },
+  {
+   "id": "rain",
+   "en": "rain",
+   "he": "גשם",
+   "he_find": "מצא את הגשם!",
+   "category": "nature",
+   "image": "images/nature/rain.png",
+   "source": "1F327"
+  },
+  {
+   "id": "snow",
+   "en": "snow",
+   "he": "שלג",
+   "he_find": "מצא את השלג!",
+   "category": "nature",
+   "image": "images/nature/snow.png",
+   "source": "2744"
+  },
+  {
+   "id": "cloud",
+   "en": "cloud",
+   "he": "ענן",
+   "he_find": "מצא את הענן!",
+   "category": "nature",
+   "image": "images/nature/cloud.png",
+   "source": "2601"
+  },
+  {
+   "id": "rainbow",
+   "en": "rainbow",
+   "he": "קשת",
+   "he_find": "מצא את הקשת!",
+   "category": "nature",
+   "image": "images/nature/rainbow.png",
+   "source": "1F308"
+  },
+  {
+   "id": "mountain",
+   "en": "mountain",
+   "he": "הר",
+   "he_find": "מצא את ההר!",
+   "category": "nature",
+   "image": "images/nature/mountain.png",
+   "source": "26F0"
+  }
+ ]
+}

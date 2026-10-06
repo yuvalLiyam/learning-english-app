@@ -1,0 +1,99 @@
+{
+ "id": "animals",
+ "name": "Animals",
+ "name_he": "חיות",
+ "known": true,
+ "order": 2,
+ "words": [
+  {
+   "id": "dog",
+   "en": "dog",
+   "he": "כלב",
+   "he_find": "מצא את הכלב!",
+   "category": "animals",
+   "image": "images/animals/dog.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "cat",
+   "en": "cat",
+   "he": "חתול",
+   "he_find": "מצא את החתול!",
+   "category": "animals",
+   "image": "images/animals/cat.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "horse",
+   "en": "horse",
+   "he": "סוס",
+   "he_find": "מצא את הסוס!",
+   "category": "animals",
+   "image": "images/animals/horse.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "cow",
+   "en": "cow",
+   "he": "פרה",
+   "he_find": "מצא את הפרה!",
+   "category": "animals",
+   "image": "images/animals/cow.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "lion",
+   "en": "lion",
+   "he": "אריה",
+   "he_find": "מצא את האריה!",
+   "category": "animals",
+   "image": "images/animals/lion.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "elephant",
+   "en": "elephant",
+   "he": "פיל",
+   "he_find": "מצא את הפיל!",
+   "category": "animals",
+   "image": "images/animals/elephant.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "monkey",
+   "en": "monkey",
+   "he": "קוף",
+   "he_find": "מצא את הקוף!",
+   "category": "animals",
+   "image": "images/animals/monkey.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "bird",
+   "en": "bird",
+   "he": "ציפור",
+   "he_find": "מצא את הציפור!",
+   "category": "animals",
+   "image": "images/animals/bird.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "fish",
+   "en": "fish",
+   "he": "דג",
+   "he_find": "מצא את הדג!",
+   "category": "animals",
+   "image": "images/animals/fish.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "rabbit",
+   "en": "rabbit",
+   "he": "ארנב",
+   "he_find": "מצא את הארנב!",
+   "category": "animals",
+   "image": "images/animals/rabbit.jpg",
+   "source": "photo"
+  }
+ ]
+}

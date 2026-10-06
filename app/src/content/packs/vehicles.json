@@ -1,0 +1,99 @@
+{
+ "id": "vehicles",
+ "name": "Vehicles",
+ "name_he": "כלי רכב",
+ "known": false,
+ "order": 5,
+ "words": [
+  {
+   "id": "car",
+   "en": "car",
+   "he": "מכונית",
+   "he_find": "מצא את המכונית!",
+   "category": "vehicles",
+   "image": "images/vehicles/car.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "bus",
+   "en": "bus",
+   "he": "אוטובוס",
+   "he_find": "מצא את האוטובוס!",
+   "category": "vehicles",
+   "image": "images/vehicles/bus.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "truck",
+   "en": "truck",
+   "he": "משאית",
+   "he_find": "מצא את המשאית!",
+   "category": "vehicles",
+   "image": "images/vehicles/truck.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "firetruck",
+   "en": "fire truck",
+   "he": "כבאית",
+   "he_find": "מצא את הכבאית!",
+   "category": "vehicles",
+   "image": "images/vehicles/firetruck.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "policecar",
+   "en": "police car",
+   "he": "ניידת משטרה",
+   "he_find": "מצא את ניידת המשטרה!",
+   "category": "vehicles",
+   "image": "images/vehicles/policecar.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "train",
+   "en": "train",
+   "he": "רכבת",
+   "he_find": "מצא את הרכבת!",
+   "category": "vehicles",
+   "image": "images/vehicles/train.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "airplane",
+   "en": "airplane",
+   "he": "מטוס",
+   "he_find": "מצא את המטוס!",
+   "category": "vehicles",
+   "image": "images/vehicles/airplane.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "boat",
+   "en": "boat",
+   "he": "סירה",
+   "he_find": "מצא את הסירה!",
+   "category": "vehicles",
+   "image": "images/vehicles/boat.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "bike",
+   "en": "bike",
+   "he": "אופניים",
+   "he_find": "מצא את האופניים!",
+   "category": "vehicles",
+   "image": "images/vehicles/bike.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "tractor",
+   "en": "tractor",
+   "he": "טרקטור",
+   "he_find": "מצא את הטרקטור!",
+   "category": "vehicles",
+   "image": "images/vehicles/tractor.jpg",
+   "source": "photo"
+  }
+ ]
+}

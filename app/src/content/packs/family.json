@@ -1,0 +1,81 @@
+{
+ "id": "family",
+ "name": "Family",
+ "name_he": "משפחה",
+ "known": false,
+ "order": 7,
+ "words": [
+  {
+   "id": "mom",
+   "en": "mom",
+   "he": "אמא",
+   "he_find": "מצא את אמא!",
+   "category": "family",
+   "image": "images/family/mom.png",
+   "source": "1F469"
+  },
+  {
+   "id": "dad",
+   "en": "dad",
+   "he": "אבא",
+   "he_find": "מצא את אבא!",
+   "category": "family",
+   "image": "images/family/dad.png",
+   "source": "1F468"
+  },
+  {
+   "id": "baby",
+   "en": "baby",
+   "he": "תינוק",
+   "he_find": "מצא את התינוק!",
+   "category": "family",
+   "image": "images/family/baby.png",
+   "source": "1F476"
+  },
+  {
+   "id": "brother",
+   "en": "brother",
+   "he": "אח",
+   "he_find": "מצא את האח!",
+   "category": "family",
+   "image": "images/family/brother.png",
+   "source": "1F466"
+  },
+  {
+   "id": "sister",
+   "en": "sister",
+   "he": "אחות",
+   "he_find": "מצא את האחות!",
+   "category": "family",
+   "image": "images/family/sister.png",
+   "source": "1F467"
+  },
+  {
+   "id": "grandma",
+   "en": "grandma",
+   "he": "סבתא",
+   "he_find": "מצא את סבתא!",
+   "category": "family",
+   "image": "images/family/grandma.png",
+   "source": "1F475"
+  },
+  {
+   "id": "grandpa",
+   "en": "grandpa",
+   "he": "סבא",
+   "he_find": "מצא את סבא!",
+   "category": "family",
+   "image": "images/family/grandpa.png",
+   "source": "1F474"
+  },
+  {
+   "id": "family",
+   "en": "family",
+   "he": "משפחה",
+   "he_find": "מצא את המשפחה!",
+   "category": "family",
+   "image": "images/family/family.png",
+   "source": "1F46A"
+  }
+ ]
+}

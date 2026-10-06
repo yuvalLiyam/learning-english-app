@@ -1,0 +1,99 @@
+{
+ "id": "dinosaurs",
+ "name": "Dinosaurs",
+ "name_he": "דינוזאורים",
+ "known": false,
+ "order": 4,
+ "words": [
+  {
+   "id": "trex",
+   "en": "T-rex",
+   "he": "טי-רקס",
+   "he_find": "מצא את הטי-רקס!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/trex.png",
+   "source": "1F996"
+  },
+  {
+   "id": "triceratops",
+   "en": "triceratops",
+   "he": "טריצרטופס",
+   "he_find": "מצא את הטריצרטופס!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/triceratops.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "stegosaurus",
+   "en": "stegosaurus",
+   "he": "סטגוזאורוס",
+   "he_find": "מצא את הסטגוזאורוס!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/stegosaurus.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "brachiosaurus",
+   "en": "brachiosaurus",
+   "he": "ברכיוזאורוס",
+   "he_find": "מצא את הברכיוזאורוס!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/brachiosaurus.png",
+   "source": "1F995"
+  },
+  {
+   "id": "pterodactyl",
+   "en": "pterodactyl",
+   "he": "פטרודקטיל",
+   "he_find": "מצא את הפטרודקטיל!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/pterodactyl.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "velociraptor",
+   "en": "velociraptor",
+   "he": "ולוצירפטור",
+   "he_find": "מצא את הוולוצירפטור!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/velociraptor.jpg",
+   "source": "photo"
+  },
+  {
+   "id": "egg",
+   "en": "egg",
+   "he": "ביצה",
+   "he_find": "מצא את הביצה!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/egg.png",
+   "source": "1F95A"
+  },
+  {
+   "id": "bones",
+   "en": "bones",
+   "he": "עצמות",
+   "he_find": "מצא את העצמות!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/bones.png",
+   "source": "1F9B4"
+  },
+  {
+   "id": "volcano",
+   "en": "volcano",
+   "he": "הר געש",
+   "he_find": "מצא את הר הגעש!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/volcano.png",
+   "source": "1F30B"
+  },
+  {
+   "id": "footprint",
+   "en": "footprint",
+   "he": "טביעת רגל",
+   "he_find": "מצא את טביעת הרגל!",
+   "category": "dinosaurs",
+   "image": "images/dinosaurs/footprint.png",
+   "source": "1F463"
+  }
+ ]
+}

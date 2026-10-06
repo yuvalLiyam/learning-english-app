@@ -1,0 +1,99 @@
+{
+ "id": "food",
+ "name": "Food",
+ "name_he": "אוכל",
+ "known": false,
+ "order": 6,
+ "words": [
+  {
+   "id": "apple",
+   "en": "apple",
+   "he": "תפוח",
+   "he_find": "מצא את התפוח!",
+   "category": "food",
+   "image": "images/food/apple.png",
+   "source": "1F34E"
+  },
+  {
+   "id": "banana",
+   "en": "banana",
+   "he": "בננה",
+   "he_find": "מצא את הבננה!",
+   "category": "food",
+   "image": "images/food/banana.png",
+   "source": "1F34C"
+  },
+  {
+   "id": "bread",
+   "en": "bread",
+   "he": "לחם",
+   "he_find": "מצא את הלחם!",
+   "category": "food",
+   "image": "images/food/bread.png",
+   "source": "1F35E"
+  },
+  {
+   "id": "milk",
+   "en": "milk",
+   "he": "חלב",
+   "he_find": "מצא את החלב!",
+   "category": "food",
+   "image": "images/food/milk.png",
+   "source": "1F95B"
+  },
+  {
+   "id": "cheese",
+   "en": "cheese",
+   "he": "גבינה",
+   "he_find": "מצא את הגבינה!",
+   "category": "food",
+   "image": "images/food/cheese.png",
+   "source": "1F9C0"
+  },
+  {
+   "id": "pizza",
+   "en": "pizza",
+   "he": "פיצה",
+   "he_find": "מצא את הפיצה!",
+   "category": "food",
+   "image": "images/food/pizza.png",
+   "source": "1F355"
+  },
+  {
+   "id": "cookie",
+   "en": "cookie",
+   "he": "עוגייה",
+   "he_find": "מצא את העוגייה!",
+   "category": "food",
+   "image": "images/food/cookie.png",
+   "source": "1F36A"
+  },
+  {
+   "id": "water",
+   "en": "water",
+   "he": "מים",
+   "he_find": "מצא את המים!",
+   "category": "food",
+   "image": "images/food/water.png",
+   "source": "1F4A7"
+  },
+  {
+   "id": "carrot",
+   "en": "carrot",
+   "he": "גזר",
+   "he_find": "מצא את הגזר!",
+   "category": "food",
+   "image": "images/food/carrot.png",
+   "source": "1F955"
+  },
+  {
+   "id": "icecream",
+   "en": "ice cream",
+   "he": "גלידה",
+   "he_find": "מצא את הגלידה!",
+   "category": "food",
+   "image": "images/food/icecream.png",
+   "source": "1F366"
+  }
+ ]
+}

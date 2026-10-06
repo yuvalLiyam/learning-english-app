@@ -1,0 +1,99 @@
+{
+ "id": "clothes",
+ "name": "Clothes",
+ "name_he": "בגדים",
+ "known": false,
+ "order": 8,
+ "words": [
+  {
+   "id": "shirt",
+   "en": "shirt",
+   "he": "חולצה",
+   "he_find": "מצא את החולצה!",
+   "category": "clothes",
+   "image": "images/clothes/shirt.png",
+   "source": "1F455"
+  },
+  {
+   "id": "pants",
+   "en": "pants",
+   "he": "מכנסיים",
+   "he_find": "מצא את המכנסיים!",
+   "category": "clothes",
+   "image": "images/clothes/pants.png",
+   "source": "1F456"
+  },
+  {
+   "id": "shoes",
+   "en": "shoes",
+   "he": "נעליים",
+   "he_find": "מצא את הנעליים!",
+   "category": "clothes",
+   "image": "images/clothes/shoes.png",
+   "source": "1F45F"
+  },
+  {
+   "id": "hat",
+   "en": "hat",
+   "he": "כובע",
+   "he_find": "מצא את הכובע!",
+   "category": "clothes",
+   "image": "images/clothes/hat.png",
+   "source": "1F9E2"
+  },
+  {
+   "id": "socks",
+   "en": "socks",
+   "he": "גרביים",
+   "he_find": "מצא את הגרביים!",
+   "category": "clothes",
+   "image": "images/clothes/socks.png",
+   "source": "1F9E6"
+  },
+  {
+   "id": "jacket",
+   "en": "jacket",
+   "he": "מעיל",
+   "he_find": "מצא את המעיל!",
+   "category": "clothes",
+   "image": "images/clothes/jacket.png",
+   "source": "1F9E5"
+  },
+  {
+   "id": "dress",
+   "en": "dress",
+   "he": "שמלה",
+   "he_find": "מצא את השמלה!",
+   "category": "clothes",
+   "image": "images/clothes/dress.png",
+   "source": "1F457"
+  },
+  {
+   "id": "gloves",
+   "en": "gloves",
+   "he": "כפפות",
+   "he_find": "מצא את הכפפות!",
+   "category": "clothes",
+   "image": "images/clothes/gloves.png",
+   "source": "1F9E4"
+  },
+  {
+   "id": "scarf",
+   "en": "scarf",
+   "he": "צעיף",
+   "he_find": "מצא את הצעיף!",
+   "category": "clothes",
+   "image": "images/clothes/scarf.png",
+   "source": "1F9E3"
+  },
+  {
+   "id": "boots",
+   "en": "boots",
+   "he": "מגפיים",
+   "he_find": "מצא את המגפיים!",
+   "category": "clothes",
+   "image": "images/clothes/boots.png",
+   "source": "1F97E"
+  }
+ ]
+}
