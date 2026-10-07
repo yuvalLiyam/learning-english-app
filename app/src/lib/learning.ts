@@ -33,8 +33,8 @@ const shuffle = <T,>(a: T[]): T[] => { const b = [...a]; for (let i = b.length -
 const pick = <T,>(a: T[]): T => a[Math.floor(Math.random() * a.length)]
 
 /** Make sure every enabled word has a progress row; words in "known" packs start as introduced. */
-export async function ensureProgress(profileId: string): Promise<Progress[]> {
-  const cats = await getEnabledCategories(profileId)
+export async function ensureProgress(profileId: string, extraCats: string[] = []): Promise<Progress[]> {
+  const cats = [...new Set([...(await getEnabledCategories(profileId)), ...extraCats])]
   const existing = await db.progress.where('profileId').equals(profileId).toArray()
   const have = new Set(existing.map((p) => p.wordId))
   const add: Progress[] = []
@@ -182,7 +182,28 @@ function roundFor(game: GameId, pool: Pool, settings: Settings, used: Set<string
   }
 }
 
-export async function buildSession(profileId: string, settings: Settings, opts: { game?: GameId; sayOk: boolean }): Promise<SessionPlan> {
+/** Lesson: 5-6 words from ONE category (un-introduced first), then games using only those words. */
+export async function buildLesson(profileId: string, settings: Settings, category: string): Promise<SessionPlan> {
+  const progress = await ensureProgress(profileId, [category])
+  const byId = new Map(progress.map((p) => [p.wordId, p]))
+  const catWords = (PACK_BY_ID[category]?.words ?? []).filter((w) => byId.has(w.id))
+  const rank = (w: Word) => { const p = byId.get(w.id)!; return !p.introduced ? 0 : !p.learned ? 1 : 2 }
+  const lesson = catWords.map((w, i) => ({ w, i })).sort((a, b) => rank(a.w) - rank(b.w) || a.i - b.i).map((x) => x.w).slice(0, Math.min(6, catWords.length))
+  const pool: Pool = { fresh: shuffle(lesson), due: [], learned: [], all: catWords, introduced: catWords }
+  const used = new Set<string>()
+  const rounds: Round[] = []
+  const games: GameId[] = lesson.length >= 3 ? ['listen', 'listen', 'bubbles', 'where', 'memory', 'listen'] : ['listen', 'listen', 'bubbles']
+  for (const g of games) {
+    if (used.size >= lesson.length) used.clear()
+    let r = roundFor(g, pool, settings, used, learnedCount(progress))
+    if (!r && g !== 'listen') r = roundFor('listen', pool, settings, used, learnedCount(progress))
+    if (r) rounds.push(r)
+  }
+  return { newWords: lesson, rounds }
+}
+
+export async function buildSession(profileId: string, settings: Settings, opts: { game?: GameId; sayOk: boolean; learn?: string }): Promise<SessionPlan> {
+  if (opts.learn) return buildLesson(profileId, settings, opts.learn)
   const progress = await ensureProgress(profileId)
   const learned = learnedCount(progress)
   const newWords = opts.game ? [] : pickNewWords(progress, Math.max(1, Math.min(3, settings.newWordsPerSession)))

@@ -17,6 +17,7 @@ export default function Home() {
     go({ name: 'session', game: g })
   }
   const playAll = async () => { sfx.tap(); stop(); await playSeq([A.ui('lets_play')]); go({ name: 'session' }) }
+  const learnMode = async () => { sfx.tap(); stop(); await playSeq([A.ui('game_learn')]); go({ name: 'learn' }) }
   const album = async () => { sfx.tap(); stop(); play(A.ui('game_album')); go({ name: 'album' }) }
 
   return (
@@ -30,9 +31,14 @@ export default function Home() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 30, width: '100%', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
           <Mascot mood="idle" level={mascotLevel(learned)} size={180} />
-          <button className="big-btn round" onPointerDown={playAll} style={{ width: 170, height: 170, background: 'linear-gradient(135deg,#66bb6a,#43a047)' }}>
-            <img src={img('images/icons/play.png')} alt="" />
-          </button>
+          <div style={{ display: 'flex', gap: 16 }}>
+            <button className="big-btn round" onPointerDown={learnMode} style={{ width: 150, height: 150, background: 'linear-gradient(135deg,#42a5f5,#1e88e5)' }}>
+              <img src={img('images/icons/learn.png')} alt="" />
+            </button>
+            <button className="big-btn round" onPointerDown={playAll} style={{ width: 150, height: 150, background: 'linear-gradient(135deg,#66bb6a,#43a047)' }}>
+              <img src={img('images/icons/play.png')} alt="" />
+            </button>
+          </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }}>
           {games.map((g) => (

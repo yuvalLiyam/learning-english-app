@@ -41,7 +41,7 @@ export default function WhereIs({ round, settings, index, total, onDone, onHome 
   const t = round.target
   const done = useCallback((ok: boolean) => onDone([{ wordId: t.id, correct: ok }]), [onDone, t.id])
   const fb = useFeedback(done, () => A.word(t.id))
-  const ins = useInstruction('where-' + index, [A.where(t.id)], A.findHe(t.id), A.word(t.id), settings)
+  const ins = useInstruction('where-' + index + t.id, [A.where(t.id)], A.findHe(t.id), A.word(t.id), settings)
   const tap = (w: Word) => { if (fb.locked.current) return; if (w.id === t.id) { ins.answered(); fb.correct(w.id) } else fb.wrong(w.id, t.id) }
   return (
     <GameFrame mood={fb.mood} index={index} total={total} onReplay={ins.replay} onHome={onHome}>

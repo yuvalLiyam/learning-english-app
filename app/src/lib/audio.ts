@@ -69,7 +69,11 @@ export function play(path: string, opts: { volume?: number } = {}): Promise<void
       const gain = c.createGain()
       gain.gain.value = opts.volume ?? 1
       src.connect(gain).connect(c.destination)
-      src.onended = () => { playing = playing.filter((x) => x !== src); resolve() }
+      let done = false
+      const finish = () => { if (done) return; done = true; playing = playing.filter((x) => x !== src); resolve() }
+      src.onended = finish
+      // safety net: if the context is suspended (audio not unlocked) onended never fires – never hang the game
+      setTimeout(finish, buf.duration * 1000 + 600)
       playing.push(src)
       src.start(0)
     }))

@@ -1,0 +1,89 @@
+{
+ "id": "actions",
+ "name": "Actions",
+ "name_he": "פעולות",
+ "known": false,
+ "order": 12,
+ "words": [
+  {
+   "id": "run",
+   "en": "run",
+   "he": "לרוץ",
+   "he_find": "מי רץ?",
+   "category": "actions",
+   "image": "images/actions/run.png",
+   "source": "1F3C3",
+   "find_en": "Who is running?"
+  },
+  {
+   "id": "walk",
+   "en": "walk",
+   "he": "ללכת",
+   "he_find": "מי הולך?",
+   "category": "actions",
+   "image": "images/actions/walk.png",
+   "source": "1F6B6",
+   "find_en": "Who is walking?"
+  },
+  {
+   "id": "swim",
+   "en": "swim",
+   "he": "לשחות",
+   "he_find": "מי שוחה?",
+   "category": "actions",
+   "image": "images/actions/swim.png",
+   "source": "1F3CA",
+   "find_en": "Who is swimming?"
+  },
+  {
+   "id": "dance",
+   "en": "dance",
+   "he": "לרקוד",
+   "he_find": "מי רוקד?",
+   "category": "actions",
+   "image": "images/actions/dance.png",
+   "source": "1F483",
+   "find_en": "Who is dancing?"
+  },
+  {
+   "id": "sleep",
+   "en": "sleep",
+   "he": "לישון",
+   "he_find": "מי ישן?",
+   "category": "actions",
+   "image": "images/actions/sleep.png",
+   "source": "1F6CC",
+   "find_en": "Who is sleeping?"
+  },
+  {
+   "id": "climb",
+   "en": "climb",
+   "he": "לטפס",
+   "he_find": "מי מטפס?",
+   "category": "actions",
+   "image": "images/actions/climb.png",
+   "source": "1F9D7",
+   "find_en": "Who is climbing?"
+  },
+  {
+   "id": "jump",
+   "en": "jump",
+   "he": "לקפוץ",
+   "he_find": "מי קופץ?",
+   "category": "actions",
+   "image": "images/actions/jump.png",
+   "source": "1F938",
+   "find_en": "Who is jumping?"
+  },
+  {
+   "id": "ride",
+   "en": "ride",
+   "he": "לרכוב",
+   "he_find": "מי רוכב?",
+   "category": "actions",
+   "image": "images/actions/ride.png",
+   "source": "1F6B4",
+   "find_en": "Who is riding?"
+  }
+ ]
+}

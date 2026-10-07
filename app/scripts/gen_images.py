@@ -70,7 +70,7 @@ STICKERS = {  # id: openmoji hex
 }
 AVATARS = {"a1":"1F466","a2":"1F467","a3":"1F9D2","a4":"1F476","a5":"1F996","a6":"1F981","a7":"1F984","a8":"1F916"}
 GAME_ICONS = {"memory":"1F0CF","listen":"1F442","bubbles":"1FAE7","sort":"1F4E6","where":"1F50D","color":"1F3A8","say":"1F3A4","album":"1F4D2","play":"25B6","parent":"1F512","home":"1F3E0","back":"2B05","sticker_badge":"1F31F","mic":"1F3A4","next":"27A1","hand":"1F446","plus":"2795",
- "zone_animals":"1F6D6","zone_food":"1F37D","zone_dinosaurs":"1F30B","zone_vehicles":"1F17F","zone_clothes":"1F9FA","zone_nature":"2601","replay":"1F50A"}
+ "zone_animals":"1F6D6","zone_food":"1F37D","zone_dinosaurs":"1F30B","zone_vehicles":"1F17F","zone_clothes":"1F9FA","zone_nature":"2601","replay":"1F50A","learn":"1F393"}
 
 if __name__ == "__main__":
     for p in load_packs():

@@ -1,0 +1,99 @@
+{
+ "id": "fruits",
+ "name": "Fruits & Vegetables",
+ "name_he": "פירות וירקות",
+ "known": false,
+ "order": 11,
+ "words": [
+  {
+   "id": "orange_fruit",
+   "en": "orange",
+   "he": "תפוז",
+   "he_find": "מצא את התפוז!",
+   "category": "fruits",
+   "image": "images/fruits/orange_fruit.png",
+   "source": "1F34A"
+  },
+  {
+   "id": "strawberry",
+   "en": "strawberry",
+   "he": "תות",
+   "he_find": "מצא את התות!",
+   "category": "fruits",
+   "image": "images/fruits/strawberry.png",
+   "source": "1F353"
+  },
+  {
+   "id": "grapes",
+   "en": "grapes",
+   "he": "ענבים",
+   "he_find": "מצא את הענבים!",
+   "category": "fruits",
+   "image": "images/fruits/grapes.png",
+   "source": "1F347"
+  },
+  {
+   "id": "watermelon",
+   "en": "watermelon",
+   "he": "אבטיח",
+   "he_find": "מצא את האבטיח!",
+   "category": "fruits",
+   "image": "images/fruits/watermelon.png",
+   "source": "1F349"
+  },
+  {
+   "id": "lemon",
+   "en": "lemon",
+   "he": "לימון",
+   "he_find": "מצא את הלימון!",
+   "category": "fruits",
+   "image": "images/fruits/lemon.png",
+   "source": "1F34B"
+  },
+  {
+   "id": "pear",
+   "en": "pear",
+   "he": "אגס",
+   "he_find": "מצא את האגס!",
+   "category": "fruits",
+   "image": "images/fruits/pear.png",
+   "source": "1F350"
+  },
+  {
+   "id": "tomato",
+   "en": "tomato",
+   "he": "עגבנייה",
+   "he_find": "מצא את העגבנייה!",
+   "category": "fruits",
+   "image": "images/fruits/tomato.png",
+   "source": "1F345"
+  },
+  {
+   "id": "cucumber",
+   "en": "cucumber",
+   "he": "מלפפון",
+   "he_find": "מצא את המלפפון!",
+   "category": "fruits",
+   "image": "images/fruits/cucumber.png",
+   "source": "1F952"
+  },
+  {
+   "id": "corn",
+   "en": "corn",
+   "he": "תירס",
+   "he_find": "מצא את התירס!",
+   "category": "fruits",
+   "image": "images/fruits/corn.png",
+   "source": "1F33D"
+  },
+  {
+   "id": "potato",
+   "en": "potato",
+   "he": "תפוח אדמה",
+   "he_find": "מצא את תפוח האדמה!",
+   "category": "fruits",
+   "image": "images/fruits/potato.png",
+   "source": "1F954"
+  }
+ ]
+}

@@ -21,7 +21,7 @@ export default function Memory({ round, settings, index, total, onDone, onHome }
   const [mood, setMood] = useState<'idle' | 'happy' | 'sad' | 'talk'>('idle')
   const misses = useRef<Record<string, number>>({})
   const busy = useRef(false)
-  const ins = useInstruction('memory-' + index, [A.ui('find_pairs')], A.uiHe('find_pairs'), null, settings)
+  const ins = useInstruction('memory-' + index + round.words[0].id, [A.ui('find_pairs')], A.uiHe('find_pairs'), null, settings)
   const finished = useRef(false)
 
   useEffect(() => {

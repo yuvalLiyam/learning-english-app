@@ -48,6 +48,13 @@ npm run build        # check + tsc + vite build  (BASE_PATH=/repo-name/ for GitH
 
 Edit `app/scripts/voices.json`, delete `app/public/audio/`, run `npm run gen:audio`.
 
+## Learn mode (📚 button on Home)
+
+Pick a category → lesson of up to 6 words from that category (un-introduced first). Each word: picture + written word,
+"blue" (2 s) "blue" (2 s) "blue" (2 s) "כחול", then "Now you say it, three times!" (speech recognition when available,
+otherwise 3 timed pauses). After the words: 6 game rounds using only the lesson words, then a sticker.
+Sticker rewards also teach the sticker's name (English → Hebrew → English) and ask the child to say it.
+
 ## Learning logic (short)
 
 - New words are introduced (English → Hebrew → English, twice) before entering games; 1–3 per "Play!" session.

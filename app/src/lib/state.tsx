@@ -4,7 +4,7 @@ import { ensureProgress, learnedCount, type GameId } from './learning'
 import { speechSupported } from './speech'
 
 export type Screen =
-  | { name: 'splash' } | { name: 'profiles' } | { name: 'home' } | { name: 'session'; game?: GameId }
+  | { name: 'splash' } | { name: 'profiles' } | { name: 'home' } | { name: 'session'; game?: GameId; learn?: string } | { name: 'learn' }
   | { name: 'album' } | { name: 'gate' } | { name: 'parent' }
 
 interface Ctx {

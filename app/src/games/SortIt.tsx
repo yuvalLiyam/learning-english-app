@@ -23,7 +23,7 @@ export default function SortIt({ round, settings, index, total, onDone, onHome }
   const busy = useRef(false)
   const finished = useRef(false)
   const [a, b] = round.cats
-  const ins = useInstruction('sort-' + index, [A.ui('sort_' + a), A.ui('sort_' + b)], A.uiHe('sort_' + a), A.ui('drag_it'), settings)
+  const ins = useInstruction('sort-' + index + a + b, [A.ui('sort_' + a), A.ui('sort_' + b)], A.uiHe('sort_' + a), A.ui('drag_it'), settings)
 
   useEffect(() => {
     if (Object.keys(placed).length === round.items.length && !finished.current) {

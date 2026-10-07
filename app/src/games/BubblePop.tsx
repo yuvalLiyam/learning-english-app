@@ -13,7 +13,7 @@ export default function BubblePop({ round, settings, index, total, onDone, onHom
   const t = round.target
   const done = useCallback((ok: boolean) => onDone([{ wordId: t.id, correct: ok }]), [onDone, t.id])
   const fb = useFeedback(done, () => A.word(t.id))
-  const ins = useInstruction('bubbles-' + index, [A.pop(t.id)], A.findHe(t.id), A.word(t.id), settings)
+  const ins = useInstruction('bubbles-' + index + t.id, [A.pop(t.id)], A.findHe(t.id), A.word(t.id), settings)
   // random lanes/timings per round
   const lanes = useMemo(() => round.options.map((_, i) => ({
     left: 8 + i * (84 / Math.max(1, round.options.length - 1)) + (Math.random() * 6 - 3),

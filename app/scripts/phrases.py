@@ -18,6 +18,8 @@ UI_EN = {
   "sort_clothes": "Put the clothes in the closet!", "sort_nature": "Put the nature things in the sky!",
   "drag_it": "Drag it to the right place!", "look": "Look!", "bye": "Bye bye! See you soon!",
   "grow": "I am growing! Thank you!",
+  "game_learn": "Let's learn new words!", "choose_category": "Choose what to learn!", "say_three": "Now you say it, three times!",
+  "again": "Again!", "good_now_games": "Great! Now let's play!",
 }
 UI_HE = {
   "try_again": "נסה שוב!", "find_pairs": "מצא את הזוגות!", "say_word": "עכשיו אתה תגיד!",
@@ -25,7 +27,7 @@ UI_HE = {
   "sort_dinosaurs": "שים את הדינוזאורים על הר הגעש!", "sort_vehicles": "שים את המכוניות במוסך!",
   "sort_clothes": "שים את הבגדים בארון!", "sort_nature": "שים את דברי הטבע בשמיים!",
   "drag_it": "גרור למקום הנכון!", "choose_game": "בחר משחק!", "who_are_you": "מי משחק היום?",
-  "tap_dino": "לחץ על הדינוזאור כדי להתחיל!",
+  "tap_dino": "לחץ על הדינוזאור כדי להתחיל!", "choose_category": "בחר מה ללמוד!", "say_three": "עכשיו אתה תגיד, שלוש פעמים!",
 }
 
 def load_packs():
@@ -40,6 +42,8 @@ def phrases():
     for k, t in UI_HE.items(): out.append((f"audio/ui/{k}_he.mp3", t, "he", "normal"))
     for p in load_packs():
         cat = p["id"]
+        out.append((f"audio/ui/cat_{cat}.mp3", p["name"] + "!", "en", "normal"))
+        out.append((f"audio/ui/cat_{cat}_he.mp3", p["name_he"], "he", "normal"))
         for w in p["words"]:
             en, wid = w["en"], w["id"]
             base = f"audio/words/{wid}"
@@ -51,13 +55,22 @@ def phrases():
             elif cat == "colors":
                 find, pop, where = f"Find the {en} balloon!", f"Pop the {en} bubble!", f"Where is the {en} balloon?"
                 out.append((base + "_color.mp3", f"Color the balloon {en}!", "en", "normal"))
-                out.append((base + "_color_he.mp3", f"צבע את הבלון ב{w['he']}!", "he", "normal"))
+                he_color = w['he'] if w['he'][0] != 'ו' else 'ו' + w['he']  # ב+ורוד -> בוורוד
+                out.append((base + "_color_he.mp3", f"תצבע את הבלון ב{he_color}!", "he", "normal"))
+            elif w.get("find_en"):
+                find = pop = where = w["find_en"]
             else:
                 find, pop, where = f"Find the {en}!", f"Pop the {en}!", f"Where is the {en}?"
             out.append((base + "_find.mp3", find, "en", "normal"))
             out.append((base + "_find_he.mp3", w["he_find"], "he", "normal"))
             out.append((base + "_pop.mp3", pop, "en", "normal"))
             out.append((base + "_where.mp3", where, "en", "normal"))
+    # sticker names: parsed from src/content/index.ts (STICKER_INFO)
+    import re
+    ts = open(os.path.join(HERE, "..", "src", "content", "index.ts"), encoding="utf-8").read()
+    for sid, en, he in re.findall(r"^\s+(\w+): \{ en: '([^']+)', he: '([^']+)' \},", ts, re.M):
+        out.append((f"audio/stickers/{sid}.mp3", en, "en", "normal"))
+        out.append((f"audio/stickers/{sid}_he.mp3", he, "he", "normal"))
     return out
 
 if __name__ == "__main__":

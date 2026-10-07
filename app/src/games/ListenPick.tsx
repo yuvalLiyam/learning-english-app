@@ -12,7 +12,7 @@ export default function ListenPick({ round, settings, index, total, onDone, onHo
   const t = round.target
   const done = useCallback((ok: boolean) => onDone([{ wordId: t.id, correct: ok }]), [onDone, t.id])
   const fb = useFeedback(done, () => A.word(t.id))
-  const ins = useInstruction('listen-' + index, [A.find(t.id)], A.findHe(t.id), A.word(t.id), settings)
+  const ins = useInstruction('listen-' + index + t.id, [A.find(t.id)], A.findHe(t.id), A.word(t.id), settings)
 
   const tap = (id: string) => {
     if (fb.locked.current) return
