@@ -28,7 +28,7 @@ export function useInstruction(
 
   const schedule = useCallback(() => {
     clear()
-    if (!en) return
+    if (!en || done.current) return
     const t1 = window.setTimeout(() => {
       if (done.current) return
       playSeq(en)
@@ -55,7 +55,7 @@ export function useInstruction(
     if (!active || !en) return
     stop()
     playSeq(en).then(() => { if (!done.current) schedule() })
-    return () => { clear(); stop() }
+    return () => { done.current = true; clear(); stop() }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, active])
 

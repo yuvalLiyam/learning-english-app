@@ -75,6 +75,7 @@ export function play(path: string, opts: { volume?: number } = {}): Promise<void
       // safety net: if the context is suspended (audio not unlocked) onended never fires – never hang the game
       setTimeout(finish, buf.duration * 1000 + 600)
       playing.push(src)
+      if (import.meta.env.DEV) { const w = window as unknown as { __plays?: string[] }; (w.__plays ??= []).push(path) }
       src.start(0)
     }))
     .catch((e) => { console.warn(e); })

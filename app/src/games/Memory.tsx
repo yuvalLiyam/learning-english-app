@@ -23,12 +23,14 @@ export default function Memory({ round, settings, index, total, onDone, onHome }
   const busy = useRef(false)
   const ins = useInstruction('memory-' + index + round.words[0].id, [A.ui('find_pairs')], A.uiHe('find_pairs'), null, settings)
   const finished = useRef(false)
+  const alive = useRef(true)
+  useEffect(() => { alive.current = true; return () => { alive.current = false; stop() } }, [])
 
   useEffect(() => {
     if (matched.size === round.words.length && !finished.current) {
       finished.current = true
       const results: Result[] = round.words.map((w) => ({ wordId: w.id, correct: (misses.current[w.id] ?? 0) <= 1 }))
-      ;(async () => { setMood('happy'); burst(); sfx.happy(); await wait(300); await play(randomPraise()); await wait(600); onDone(results) })()
+      ;(async () => { setMood('happy'); burst(); sfx.happy(); await wait(300); if (!alive.current) return; await play(randomPraise()); await wait(600); if (alive.current) onDone(results) })()
     }
   }, [matched, round.words, onDone])
 

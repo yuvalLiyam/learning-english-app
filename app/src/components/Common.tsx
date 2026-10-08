@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, type ReactNode } from 'react'
+import { useState, useCallback, useRef, useEffect, type ReactNode } from 'react'
 import confetti from 'canvas-confetti'
 import { img, wordImg, isPhoto, type Word, PRAISES, A } from '../content'
 import { play, playSeq, stop, sfx, wait } from '../lib/audio'
@@ -48,6 +48,8 @@ export function useFeedback(onDone: (correct: boolean) => void, targetAudio: () 
   const [mood, setMood] = useState<'idle' | 'happy' | 'sad' | 'talk'>('idle')
   const tries = useRef(0)
   const locked = useRef(false)
+  const alive = useRef(true)
+  useEffect(() => { alive.current = true; return () => { alive.current = false; stop() } }, [])
 
   const reset = useCallback(() => { tries.current = 0; locked.current = false; setWrongId(null); setCorrectId(null); setHintId(null); setMood('idle') }, [])
 
@@ -58,9 +60,10 @@ export function useFeedback(onDone: (correct: boolean) => void, targetAudio: () 
     setCorrectId(id); setMood('happy')
     sfx.happy(); burst()
     await wait(350)
+    if (!alive.current) return
     await play(randomPraise())
     await wait(500)
-    onDone(tries.current === 0)
+    if (alive.current) onDone(tries.current === 0)
   }, [onDone])
 
   const wrong = useCallback(async (id: string, correctAnswerId: string) => {
@@ -71,20 +74,24 @@ export function useFeedback(onDone: (correct: boolean) => void, targetAudio: () 
     setWrongId(id); setMood('sad')
     sfx.oops()
     await wait(300)
+    if (!alive.current) return
     await play(A.ui('try_again'))
+    if (!alive.current) return
     if (tries.current >= 2) {
       setWrongId(null); setHintId(correctAnswerId); setMood('talk')
       await wait(300)
+      if (!alive.current) return
       await play(targetAudio())
       await wait(600)
+      if (!alive.current) return
       await play(targetAudio())
       await wait(800)
-      onDone(false)
+      if (alive.current) onDone(false)
       return
     }
     setWrongId(null); setMood('idle')
     locked.current = false
-    await playSeq([targetAudio()])
+    if (alive.current) await playSeq([targetAudio()])
   }, [onDone, targetAudio])
 
   return { wrongId, correctId, hintId, mood, correct, wrong, reset, locked }

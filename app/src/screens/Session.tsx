@@ -146,8 +146,10 @@ function End({ stats, startLearned, onHome }: { stats: SessionRow; startLearned:
   const [listening, setListening] = useState(false)
   const [mood, setMood] = useState<'happy' | 'talk' | 'idle'>('happy')
   const ran = useRef(false)
+  const alive = useRef(true)
   const sayName = (s: string) => playSeq([A.sticker(s), A.stickerHe(s), A.sticker(s)], 400)
   useEffect(() => {
+    alive.current = true
     if (ran.current) return
     ran.current = true
     ;(async () => {
@@ -158,14 +160,15 @@ function End({ stats, startLearned, onHome }: { stats: SessionRow; startLearned:
       await db.stickers.put({ id: `${profile!.id}:${s}`, profileId: profile!.id, stickerId: s, earnedAt: Date.now() })
       preload([A.sticker(s), A.stickerHe(s), A.ui('say_word'), A.ui('i_heard')])
       await playSeq([A.ui('all_done')])
+      if (!alive.current) return
       setSticker(s); sfx.sticker(); burst()
-      await wait(300); await play(A.ui('sticker'))
+      await wait(300); if (!alive.current) return; await play(A.ui('sticker'))
       // teach the word: "Octopus... תמנון... Octopus!"
-      await wait(400); setMood('talk'); await sayName(s); setMood('happy')
+      await wait(400); if (!alive.current) return; setMood('talk'); await sayName(s); setMood('happy')
       if (mascotLevel(learned) > mascotLevel(startLearned)) { await wait(400); setGrew(true); sfx.grow(); await play(A.ui('grow')) }
       // bonus: let the child say it (forgiving – never a failure on the reward screen)
-      if (sayOk) {
-        await wait(300); setMood('talk'); await play(A.ui('say_word')); setMood('idle')
+      if (sayOk && alive.current) {
+        await wait(300); if (!alive.current) return; setMood('talk'); await play(A.ui('say_word')); setMood('idle')
         setListening(true)
         const r = await listen(5000)
         setListening(false)

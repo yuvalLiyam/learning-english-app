@@ -22,6 +22,8 @@ export default function SortIt({ round, settings, index, total, onDone, onHome }
   const zones = useRef<Record<string, HTMLDivElement | null>>({})
   const busy = useRef(false)
   const finished = useRef(false)
+  const alive = useRef(true)
+  useEffect(() => { alive.current = true; return () => { alive.current = false; stop() } }, [])
   const [a, b] = round.cats
   const ins = useInstruction('sort-' + index + a + b, [A.ui('sort_' + a), A.ui('sort_' + b)], A.uiHe('sort_' + a), A.ui('drag_it'), settings)
 
@@ -29,7 +31,7 @@ export default function SortIt({ round, settings, index, total, onDone, onHome }
     if (Object.keys(placed).length === round.items.length && !finished.current) {
       finished.current = true
       const results: Result[] = round.items.map((w) => ({ wordId: w.id, correct: (tries.current[w.id] ?? 0) === 0 }))
-      ;(async () => { setMood('happy'); burst(); sfx.happy(); await wait(300); await play(randomPraise()); await wait(600); onDone(results) })()
+      ;(async () => { setMood('happy'); burst(); sfx.happy(); await wait(300); if (!alive.current) return; await play(randomPraise()); await wait(600); if (alive.current) onDone(results) })()
     }
   }, [placed, round.items, onDone])
 
