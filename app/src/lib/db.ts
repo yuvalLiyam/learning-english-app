@@ -7,6 +7,7 @@ export interface Progress {
   profileId: string
   wordId: string
   introduced: boolean
+  introducedAt?: number
   box: number // Leitner box 0..4
   correct: number
   wrong: number
@@ -31,7 +32,7 @@ export interface Settings {
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 'global', repeatEnMs: 5000, hebrewMs: 7000, wordRepeatMs: 10000,
-  learnedDays: 3, reviewRatio: 0.15, newWordsPerSession: 2, roundsPerSession: 8,
+  learnedDays: 3, reviewRatio: 0.15, newWordsPerSession: 3, roundsPerSession: 10,
 }
 
 class GameDB extends Dexie {
@@ -58,7 +59,9 @@ export const uid = () => Math.random().toString(36).slice(2, 10)
 
 export async function getGlobalSettings(): Promise<Settings> {
   const s = await db.settings.get('global')
-  return { ...DEFAULT_SETTINGS, ...(s ?? {}) }
+  const out = { ...DEFAULT_SETTINGS, ...(s ?? {}) }
+  if (import.meta.env.DEV && localStorage.getItem('fastTimers')) { out.repeatEnMs = 1500; out.hebrewMs = 1500; out.wordRepeatMs = 2000 }
+  return out
 }
 export async function saveGlobalSettings(s: Partial<Settings>) {
   const cur = await getGlobalSettings()

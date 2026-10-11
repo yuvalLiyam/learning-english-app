@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 // BASE_PATH is set by the GitHub Pages workflow to "/<repo-name>/"
+const BUILD = new Date().toISOString().slice(0, 16).replace('T', ' ') + (process.env.GITHUB_SHA ? ' · ' + process.env.GITHUB_SHA.slice(0, 7) : '')
+
 export default defineConfig({
+  define: { __BUILD__: JSON.stringify(BUILD) },
   base: process.env.BASE_PATH ?? '/',
   plugins: [
     react(),

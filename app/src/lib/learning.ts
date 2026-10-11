@@ -78,7 +78,7 @@ export async function recordAnswer(profileId: string, wordId: string, correct: b
 export async function markIntroduced(profileId: string, wordId: string) {
   const id = `${profileId}:${wordId}`
   const p = await db.progress.get(id)
-  if (p && !p.introduced) { p.introduced = true; p.box = 0; p.dueAt = 0; await db.progress.put(p) }
+  if (p && !p.introduced) { p.introduced = true; p.introducedAt = Date.now(); p.box = 0; p.dueAt = 0; await db.progress.put(p) }
 }
 
 /** New words come from the first non-"known" enabled pack that still has un-introduced words. */
@@ -101,44 +101,78 @@ export function mascotLevel(learned: number) {
   return lvl
 }
 
-interface Pool { fresh: Word[]; due: Word[]; learned: Word[]; all: Word[]; introduced: Word[] }
+interface Pool { fresh: Word[]; focus: Word[]; all: Word[]; introduced: Word[]; prog: Map<string, Progress> }
+
+const ALL_SCENE_CATS = Object.values(SCENE_CATS).flat()
+const sceneOf = (w: Word) => (Object.keys(SCENE_CATS) as SceneId[]).find((s) => SCENE_CATS[s].includes(w.category))
+void ALL_SCENE_CATS
+
+/** How likely a word is to be picked as a question target. New / recently introduced / wrongly answered words dominate. */
+function weight(p: Progress | undefined, w: Word, freshIds: Set<string>): number {
+  if (freshIds.has(w.id)) return 20
+  if (!p || !p.introduced) return 0
+  const known = !!PACK_BY_ID[w.category]?.known
+  let wt = [8, 4, 2, 1, 0.6][Math.min(4, p.box)]
+  if (p.learned) wt *= 0.25
+  const since = p.introducedAt ?? (known ? 0 : p.lastSeen || 0)
+  const age = since ? Date.now() - since : Infinity
+  if (age < 3 * DAY) wt *= 5
+  else if (age < 7 * DAY) wt *= 2.5
+  if (known && p.correct > 0 && p.wrong <= p.correct) wt *= 0.4 // confidence-builders: keep, but don't flood
+  if (p.wrong > p.correct) wt *= 2
+  return wt
+}
+
+function weightedPick(words: Word[], wt: (w: Word) => number, avoid: Set<string>): Word | null {
+  const ws = words.map((w) => wt(w) * (avoid.has(w.id) ? 0.04 : 1))
+  const total = ws.reduce((a, b) => a + b, 0)
+  if (total <= 0) return null
+  let r = Math.random() * total
+  for (let i = 0; i < words.length; i++) { r -= ws[i]; if (r <= 0) return words[i] }
+  return words[words.length - 1]
+}
+
 function buildPool(progress: Progress[], fresh: Word[]): Pool {
-  const now = Date.now()
-  const introduced = progress.filter((p) => p.introduced).map((p) => WORD_BY_ID[p.wordId]).filter(Boolean)
+  const prog = new Map(progress.map((p) => [p.wordId, p]))
   const freshIds = new Set(fresh.map((w) => w.id))
-  const due = progress.filter((p) => p.introduced && !p.learned && !freshIds.has(p.wordId) && p.dueAt <= now).map((p) => WORD_BY_ID[p.wordId])
-  const notDue = progress.filter((p) => p.introduced && !p.learned && !freshIds.has(p.wordId) && p.dueAt > now).map((p) => WORD_BY_ID[p.wordId])
-  const learned = progress.filter((p) => p.learned).map((p) => WORD_BY_ID[p.wordId])
+  const introduced = progress.filter((p) => p.introduced).map((p) => WORD_BY_ID[p.wordId]).filter(Boolean)
   const all = progress.map((p) => WORD_BY_ID[p.wordId]).filter(Boolean)
-  // if nothing is due, fall back to not-yet-due review words so sessions are never empty
-  return { fresh, due: due.length ? shuffle(due) : shuffle(notDue), learned: shuffle(learned), all, introduced: [...introduced, ...fresh] }
+  // focus = fresh words + the most recently introduced / still-weak words (they show up as targets AND as wrong options)
+  const recent = introduced
+    .filter((w) => !freshIds.has(w.id) && weight(prog.get(w.id), w, freshIds) >= 12)
+    .sort((a, b) => weight(prog.get(b.id), b, freshIds) - weight(prog.get(a.id), a, freshIds))
+    .slice(0, 8)
+  return { fresh, focus: [...fresh, ...recent], all, introduced: [...new Set([...introduced, ...fresh])], prog }
 }
 
-function pickTarget(pool: Pool, ratio: number, used: Set<string>, ok: (w: Word) => boolean = () => true): Word | null {
-  const r = Math.random()
-  const tryList = (list: Word[]) => list.find((w) => ok(w) && !used.has(w.id)) ?? list.find(ok)
-  const order: Word[][] = r < 0.5 && pool.fresh.length ? [pool.fresh, pool.due, pool.learned]
-    : r < 1 - ratio || !pool.learned.length ? [pool.due, pool.fresh, pool.learned] : [pool.learned, pool.due, pool.fresh]
-  for (const l of order) { if (l.length) { const w = tryList(l); if (w) return w } }
-  return null
+/** Wrong options: same category first, new/focus words preferred; falls back to any word. */
+function distractors(target: Word, pool: Pool, n: number, opts: { from?: Word[]; focusFirst?: boolean } = {}): Word[] {
+  const focusIds = new Set(pool.focus.map((w) => w.id))
+  const rank = (w: Word) => opts.focusFirst
+    ? (focusIds.has(w.id) ? 0 : 2) + (w.category === target.category ? 0 : 1)
+    : (w.category === target.category ? 0 : 2) + (focusIds.has(w.id) ? 0 : 1)
+  const pickFrom = (src: Word[]) => shuffle(src.filter((w) => w.id !== target.id)).sort((a, b) => rank(a) - rank(b))
+  const intro = new Set(pool.introduced.map((w) => w.id))
+  const base = opts.from ?? pool.all
+  const out = pickFrom(base.filter((w) => intro.has(w.id))).slice(0, n)
+  if (out.length < n) out.push(...pickFrom(base.filter((w) => !intro.has(w.id))).slice(0, n - out.length))
+  return out
 }
 
-/** distractors: prefer same category, then anything enabled. */
-function distractors(target: Word, pool: Pool, n: number, from?: Word[]): Word[] {
-  const src = from ?? pool.all
-  const same = shuffle(src.filter((w) => w.id !== target.id && w.category === target.category))
-  const other = shuffle(src.filter((w) => w.id !== target.id && w.category !== target.category))
-  return [...same, ...other].slice(0, n)
+function eligible(game: GameId, w: Word, pool: Pool): boolean {
+  switch (game) {
+    case 'where': return !!sceneOf(w)
+    case 'color': return w.category === 'colors'
+    case 'sort': {
+      if (!SORT_CATS.includes(w.category)) return false
+      const ok = SORT_CATS.filter((c) => pool.introduced.filter((x) => x.category === c).length >= 2)
+      return ok.includes(w.category) && ok.length >= 2
+    }
+    default: return true
+  }
 }
 
-function roundFor(game: GameId, pool: Pool, settings: Settings, used: Set<string>, learned: number): Round | null {
-  const ALL_SCENE_CATS = Object.values(SCENE_CATS).flat()
-  const ok = game === 'where' ? (w: Word) => ALL_SCENE_CATS.includes(w.category)
-    : game === 'sort' ? (w: Word) => SORT_CATS.includes(w.category)
-    : game === 'color' ? (w: Word) => w.category === 'colors' : () => true
-  const target = pickTarget(pool, settings.reviewRatio, used, ok)
-  if (!target) return null
-  used.add(target.id)
+function roundFor(game: GameId, target: Word, pool: Pool, learned: number): Round | null {
   switch (game) {
     case 'listen':
     case 'bubbles': {
@@ -148,58 +182,105 @@ function roundFor(game: GameId, pool: Pool, settings: Settings, used: Set<string
     }
     case 'memory': {
       const pairs = Math.min(6, 3 + Math.floor(learned / 8))
-      const words = [target, ...distractors(target, pool, pairs - 1, pool.introduced)]
+      const words = [target, ...distractors(target, pool, pairs - 1, { from: pool.introduced, focusFirst: true })]
       if (words.length < 3) return null
       return { game, words }
     }
     case 'sort': {
       const catsAvail = SORT_CATS.filter((c) => pool.introduced.filter((w) => w.category === c).length >= 2)
       if (catsAvail.length < 2) return null
-      const a = catsAvail.includes(target.category) ? target.category : pick(catsAvail)
+      const a = target.category
+      if (!catsAvail.includes(a)) return null
       const b = pick(catsAvail.filter((c) => c !== a))
-      const items = [
-        ...shuffle(pool.introduced.filter((w) => w.category === a)).slice(0, 2),
-        ...shuffle(pool.introduced.filter((w) => w.category === b)).slice(0, 2),
-      ]
-      return { game, cats: [a, b], items: shuffle(items) }
+      const focusIds = new Set(pool.focus.map((w) => w.id))
+      const take = (cat: string, must?: Word) => {
+        const list = shuffle(pool.introduced.filter((w) => w.category === cat && w.id !== must?.id))
+          .sort((x, y) => (focusIds.has(x.id) ? 0 : 1) - (focusIds.has(y.id) ? 0 : 1))
+        return (must ? [must] : []).concat(list).slice(0, 2)
+      }
+      return { game, cats: [a, b], items: shuffle([...take(a, target), ...take(b)]) }
     }
     case 'where': {
-      const scene = (Object.keys(SCENE_CATS) as SceneId[]).find((s) => SCENE_CATS[s].includes(target.category))
+      const scene = sceneOf(target)
       if (!scene) return null
-      const others = distractors(target, pool, 4, pool.all.filter((w) => SCENE_CATS[scene].includes(w.category)))
+      const others = distractors(target, pool, 4, { from: pool.all.filter((w) => SCENE_CATS[scene].includes(w.category)) })
       if (others.length < 2) return null
       return { game, scene, objects: shuffle([target, ...others]), target }
     }
     case 'color': {
       const colors = pool.all.filter((w) => w.category === 'colors')
-      if (colors.length < 4) return null
-      const t = target.category === 'colors' ? target : pick(colors)
-      used.add(t.id)
-      return { game, target: t, options: shuffle([t, ...shuffle(colors.filter((c) => c.id !== t.id)).slice(0, 3)]) }
+      if (colors.length < 4 || target.category !== 'colors') return null
+      const rest = distractors(target, pool, 3, { from: colors })
+      return { game, target, options: shuffle([target, ...rest]) }
     }
     case 'say':
       return { game, target }
   }
 }
 
-/** Lesson: 5-6 words from ONE category (un-introduced first), then games using only those words. */
+/**
+ * Pick `n` question targets: every fresh word is guaranteed `perFresh` rounds, the rest are weighted-random
+ * (new / recent / weak words >> already-known ones), no word twice in a row.
+ */
+function pickTargets(pool: Pool, n: number, perFresh: number, canBe: (w: Word) => boolean = () => true): Word[] {
+  const freshIds = new Set(pool.fresh.map((w) => w.id))
+  const wt = (w: Word) => (canBe(w) ? weight(pool.prog.get(w.id), w, freshIds) : 0)
+  const out: Word[] = []
+  for (const w of pool.fresh) if (canBe(w)) for (let i = 0; i < perFresh; i++) out.push(w)
+  const used = new Set(out.map((w) => w.id))
+  let guard = 0
+  while (out.length < n && guard++ < 200) {
+    const w = weightedPick(pool.introduced, wt, used)
+    if (!w) break
+    out.push(w); used.add(w.id)
+  }
+  const sh = shuffle(out)
+  for (let i = 1; i < sh.length; i++) { // no immediate repeats
+    if (sh[i].id === sh[i - 1].id) {
+      const j = sh.findIndex((x, k) => k > i && x.id !== sh[i].id && x.id !== sh[i - 1].id)
+      if (j > -1) [sh[i], sh[j]] = [sh[j], sh[i]]
+    }
+  }
+  return sh
+}
+
+const GAME_WEIGHT: Record<GameId, number> = { listen: 3, bubbles: 3, memory: 2, where: 2, sort: 2, color: 2, say: 1.5 }
+const GAME_CAP: Partial<Record<GameId, number>> = { memory: 2, sort: 2, say: 2 }
+
+function chooseGame(target: Word, pool: Pool, allowed: GameId[], prev: GameId | null, counts: Record<string, number>): GameId {
+  const cands = allowed.filter((g) => eligible(g, target, pool) && g !== prev && (GAME_CAP[g] === undefined || (counts[g] ?? 0) < GAME_CAP[g]!))
+  const list = cands.length ? cands : (['listen', 'bubbles'] as GameId[]).filter((g) => g !== prev)
+  const total = list.reduce((a, g) => a + GAME_WEIGHT[g], 0)
+  let r = Math.random() * total
+  for (const g of list) { r -= GAME_WEIGHT[g]; if (r <= 0) return g }
+  return list[0]
+}
+
+function makeRounds(pool: Pool, targets: Word[], allowed: GameId[], learned: number, fixedGame?: GameId): Round[] {
+  const rounds: Round[] = []
+  const counts: Record<string, number> = {}
+  let prev: GameId | null = null
+  for (const t of targets) {
+    let g: GameId = fixedGame && eligible(fixedGame, t, pool) ? fixedGame : chooseGame(t, pool, allowed, prev, counts)
+    let r = roundFor(g, t, pool, learned)
+    if (!r) { g = 'listen'; r = roundFor(g, t, pool, learned) }
+    if (r) { rounds.push(r); prev = g; counts[g] = (counts[g] ?? 0) + 1 }
+  }
+  return rounds
+}
+
+/** Lesson: 5-6 words from ONE category (un-introduced first), then games using only those words (2 rounds per word). */
 export async function buildLesson(profileId: string, settings: Settings, category: string): Promise<SessionPlan> {
+  void settings
   const progress = await ensureProgress(profileId, [category])
   const byId = new Map(progress.map((p) => [p.wordId, p]))
   const catWords = (PACK_BY_ID[category]?.words ?? []).filter((w) => byId.has(w.id))
   const rank = (w: Word) => { const p = byId.get(w.id)!; return !p.introduced ? 0 : !p.learned ? 1 : 2 }
   const lesson = catWords.map((w, i) => ({ w, i })).sort((a, b) => rank(a.w) - rank(b.w) || a.i - b.i).map((x) => x.w).slice(0, Math.min(6, catWords.length))
-  const pool: Pool = { fresh: shuffle(lesson), due: [], learned: [], all: catWords, introduced: catWords }
-  const used = new Set<string>()
-  const rounds: Round[] = []
-  const games: GameId[] = lesson.length >= 3 ? ['listen', 'listen', 'bubbles', 'where', 'memory', 'listen'] : ['listen', 'listen', 'bubbles']
-  for (const g of games) {
-    if (used.size >= lesson.length) used.clear()
-    let r = roundFor(g, pool, settings, used, learnedCount(progress))
-    if (!r && g !== 'listen') r = roundFor('listen', pool, settings, used, learnedCount(progress))
-    if (r) rounds.push(r)
-  }
-  return { newWords: lesson, rounds }
+  const pool: Pool = { fresh: lesson, focus: lesson, all: catWords, introduced: catWords, prog: byId }
+  const targets = pickTargets(pool, Math.min(12, lesson.length * 2), 2)
+  const allowed: GameId[] = lesson.length >= 3 ? ['listen', 'bubbles', 'where', 'memory'] : ['listen', 'bubbles']
+  return { newWords: lesson, rounds: makeRounds(pool, targets, allowed, learnedCount(progress)) }
 }
 
 export async function buildSession(profileId: string, settings: Settings, opts: { game?: GameId; sayOk: boolean; learn?: string }): Promise<SessionPlan> {
@@ -208,18 +289,11 @@ export async function buildSession(profileId: string, settings: Settings, opts: 
   const learned = learnedCount(progress)
   const newWords = opts.game ? [] : pickNewWords(progress, Math.max(1, Math.min(3, settings.newWordsPerSession)))
   const pool = buildPool(progress, newWords)
-  const used = new Set<string>()
-  const rounds: Round[] = []
-  const games: GameId[] = opts.game
-    ? Array(6).fill(opts.game)
-    : shuffle(['listen', 'bubbles', 'memory', 'where', 'sort', 'color', 'listen', 'bubbles', 'say']).filter((g) => g !== 'say' || opts.sayOk)
-  for (const g of games) {
-    if (rounds.length >= (opts.game ? 6 : settings.roundsPerSession)) break
-    let r = roundFor(g, pool, settings, used, learned)
-    if (!r && g !== 'listen') r = roundFor('listen', pool, settings, used, learned)
-    if (r) rounds.push(r)
-  }
-  return { newWords, rounds }
+  const allowed = ALL_GAMES.filter((g) => g !== 'say' || opts.sayOk)
+  const game = opts.game
+  const n = game ? 6 : Math.max(settings.roundsPerSession, newWords.length * 2 + 4)
+  const targets = pickTargets(pool, n, game ? 0 : 2, game ? (w) => eligible(game, w, pool) : undefined)
+  return { newWords, rounds: makeRounds(pool, targets, allowed, learned, game) }
 }
 
 export const packName = (id: string) => PACK_BY_ID[id]?.name ?? id

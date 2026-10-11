@@ -18,7 +18,7 @@ export default function Home() {
   }
   const playAll = async () => { sfx.tap(); stop(); await playSeq([A.ui('lets_play')]); go({ name: 'session' }) }
   const learnMode = async () => { sfx.tap(); stop(); await playSeq([A.ui('game_learn')]); go({ name: 'learn' }) }
-  const album = async () => { sfx.tap(); stop(); play(A.ui('game_album')); go({ name: 'album' }) }
+  const album = () => { sfx.tap(); go({ name: 'album' }) }
 
   return (
     <div className="screen" style={{ paddingTop: 100 }}>

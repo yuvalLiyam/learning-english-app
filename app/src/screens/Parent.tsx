@@ -139,7 +139,7 @@ export default function Parent() {
           </div>
         </div>
       )}
-      <div style={{ fontSize: 14, color: '#777' }}>תמונות: OpenMoji (CC BY-SA 4.0) ותמונות חופשיות מ-Wikimedia Commons – ראו CREDITS.md</div>
+      <div style={{ fontSize: 14, color: '#777' }}>תמונות: OpenMoji (CC BY-SA 4.0) ותמונות חופשיות מ-Wikimedia Commons – ראו CREDITS.md · גרסה {__BUILD__}</div>
     </div>
   )
 }

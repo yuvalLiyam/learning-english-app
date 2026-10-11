@@ -19,6 +19,11 @@ function getCtx(): AudioContext {
   return ctx
 }
 
+/** iOS suspends/"interrupts" the context when the app is backgrounded – bring it back on return. */
+export function resumeIfNeeded() {
+  if (ctx && ctx.state !== 'running') ctx.resume().catch(() => {})
+}
+
 export async function unlock(): Promise<void> {
   const c = getCtx()
   if (c.state === 'suspended') await c.resume().catch(() => {})
@@ -75,7 +80,7 @@ export function play(path: string, opts: { volume?: number } = {}): Promise<void
       // safety net: if the context is suspended (audio not unlocked) onended never fires – never hang the game
       setTimeout(finish, buf.duration * 1000 + 600)
       playing.push(src)
-      if (import.meta.env.DEV) { const w = window as unknown as { __plays?: string[] }; (w.__plays ??= []).push(path) }
+      if (import.meta.env.DEV) { const w = window as unknown as { __plays?: string[]; __screen?: string }; (w.__plays ??= []).push(`${w.__screen ?? '?'}:${path}`) }
       src.start(0)
     }))
     .catch((e) => { console.warn(e); })

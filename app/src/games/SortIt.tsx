@@ -49,16 +49,18 @@ export default function SortIt({ round, settings, index, total, onDone, onHome }
     ins.answered()
     if (z === w.category) {
       setPlaced((p) => ({ ...p, [w.id]: z })); sfx.happy(); setMood('happy')
-      stop(); play(A.word(w.id)); await wait(500); setMood('idle')
+      stop(); play(A.word(w.id)); await wait(500); if (alive.current) setMood('idle')
     } else {
       busy.current = true
       tries.current[w.id] = (tries.current[w.id] ?? 0) + 1
       setWrongId(w.id); setMood('sad'); sfx.oops(); stop()
-      await wait(300); await play(A.ui('try_again'))
+      await wait(300); if (!alive.current) return; await play(A.ui('try_again'))
+      if (!alive.current) return
       setWrongId(null); setMood('idle')
       if (tries.current[w.id] >= 2) {
         setHintCat(w.category); setMood('talk')
         await play(A.ui('sort_' + w.category)); await wait(800)
+        if (!alive.current) return
         setHintCat(null); setPlaced((p) => ({ ...p, [w.id]: w.category }))
       }
       busy.current = false

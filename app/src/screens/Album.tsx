@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { img, STICKERS, A } from '../content'
 import { db } from '../lib/db'
-import { sfx, playSeq, stop } from '../lib/audio'
+import { sfx, play, playSeq, stop } from '../lib/audio'
 import { useApp } from '../lib/state'
 import { IconButton } from '../components/Common'
 
 export default function Album() {
   const { go, profile } = useApp()
   const [have, setHave] = useState<Set<string>>(new Set())
+  useEffect(() => { play(A.ui('game_album')); return () => stop() }, [])
   useEffect(() => { db.stickers.where('profileId').equals(profile!.id).toArray().then((s) => setHave(new Set(s.map((x) => x.stickerId)))) }, [profile])
   return (
     <div className="screen" style={{ paddingTop: 110, justifyContent: 'flex-start', background: '#fff3e0' }}>

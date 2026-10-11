@@ -14,7 +14,7 @@ function Router() {
     case 'splash': return <Splash />
     case 'profiles': return <Profiles />
     case 'home': return profile ? <Home /> : <Profiles />
-    case 'session': return profile ? <Session key={Date.now()} game={screen.game} learn={screen.learn} /> : <Profiles />
+    case 'session': return profile ? <Session key={screen.nonce} game={screen.game} learn={screen.learn} /> : <Profiles />
     case 'learn': return profile ? <Learn /> : <Profiles />
     case 'album': return profile ? <Album /> : <Profiles />
     case 'gate': return <ParentGate />

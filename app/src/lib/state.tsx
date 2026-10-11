@@ -1,10 +1,11 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from 'react'
 import { db, getGlobalSettings, DEFAULT_SETTINGS, type Profile, type Settings } from './db'
 import { ensureProgress, learnedCount, type GameId } from './learning'
-import { speechSupported } from './speech'
+import { speechSupported, abortListen } from './speech'
+import { stop } from './audio'
 
 export type Screen =
-  | { name: 'splash' } | { name: 'profiles' } | { name: 'home' } | { name: 'session'; game?: GameId; learn?: string } | { name: 'learn' }
+  | { name: 'splash' } | { name: 'profiles' } | { name: 'home' } | { name: 'session'; game?: GameId; learn?: string; nonce?: number } | { name: 'learn' }
   | { name: 'album' } | { name: 'gate' } | { name: 'parent' }
 
 interface Ctx {
@@ -18,7 +19,14 @@ const C = createContext<Ctx>(null!)
 export const useApp = () => useContext(C)
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [screen, go] = useState<Screen>({ name: 'splash' })
+  const [screen, setScreen] = useState<Screen>({ name: 'splash' })
+  const nonce = useRef(0)
+  // every navigation silences whatever the previous screen was saying
+  const go = useCallback((s: Screen) => {
+    stop(); abortListen()
+    if (import.meta.env.DEV) (window as unknown as { __screen?: string }).__screen = s.name
+    setScreen(s.name === 'session' ? { ...s, nonce: ++nonce.current } : s)
+  }, [])
   const [profile, setProfileState] = useState<Profile | null>(null)
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
   const [learned, setLearned] = useState(0)

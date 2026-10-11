@@ -3,7 +3,7 @@ import { A, STICKERS, STICKER_INFO, img, wordImg, isPhoto, type Word } from '../
 import { db, today, type Session as SessionRow } from '../lib/db'
 import { buildSession, markIntroduced, recordAnswer, mascotLevel, type SessionPlan, type Round } from '../lib/learning'
 import { play, playSeq, preload, sfx, stop, wait } from '../lib/audio'
-import { listen, matches } from '../lib/speech'
+import { listen, matches, abortListen } from '../lib/speech'
 import { useApp } from '../lib/state'
 import Mascot from '../components/Mascot'
 import { IconButton, burst, randomPraise } from '../components/Common'
@@ -57,7 +57,6 @@ export default function Session({ game, learn }: { game?: SessionPlan['rounds'][
       if (!plan) return s
       if (s.kind === 'intro') {
         if (s.i + 1 < plan.newWords.length) return { kind: 'intro', i: s.i + 1 }
-        if (learn) play(A.ui('good_now_games'))
         return plan.rounds.length ? { kind: 'round', i: 0 } : { kind: 'end' }
       }
       if (s.kind === 'round') return s.i + 1 < plan.rounds.length ? { kind: 'round', i: s.i + 1 } : { kind: 'end' }
@@ -76,8 +75,9 @@ export default function Session({ game, learn }: { game?: SessionPlan['rounds'][
   const introDone = useCallback(async (w: Word) => {
     await markIntroduced(profile!.id, w.id)
     stats.current.introduced.push(w.id)
+    if (learn && plan && plan.newWords[plan.newWords.length - 1]?.id === w.id && plan.rounds.length) play(A.ui('good_now_games'))
     next()
-  }, [profile, next])
+  }, [profile, next, learn, plan])
 
   if (!plan || step.kind === 'loading') return <div className="screen"><Mascot mood="idle" level={mascotLevel(learned)} size={200} /></div>
   if (step.kind === 'intro') return learn
@@ -150,36 +150,38 @@ function End({ stats, startLearned, onHome }: { stats: SessionRow; startLearned:
   const sayName = (s: string) => playSeq([A.sticker(s), A.stickerHe(s), A.sticker(s)], 400)
   useEffect(() => {
     alive.current = true
-    if (ran.current) return
-    ran.current = true
-    ;(async () => {
-      await db.sessions.add(stats)
-      const have = new Set((await db.stickers.where('profileId').equals(profile!.id).toArray()).map((s) => s.stickerId))
-      const left = STICKERS.filter((s) => !have.has(s))
-      const s = left.length ? left[Math.floor(Math.random() * left.length)] : STICKERS[Math.floor(Math.random() * STICKERS.length)]
-      await db.stickers.put({ id: `${profile!.id}:${s}`, profileId: profile!.id, stickerId: s, earnedAt: Date.now() })
-      preload([A.sticker(s), A.stickerHe(s), A.ui('say_word'), A.ui('i_heard')])
-      await playSeq([A.ui('all_done')])
-      if (!alive.current) return
-      setSticker(s); sfx.sticker(); burst()
-      await wait(300); if (!alive.current) return; await play(A.ui('sticker'))
-      // teach the word: "Octopus... תמנון... Octopus!"
-      await wait(400); if (!alive.current) return; setMood('talk'); await sayName(s); setMood('happy')
-      if (mascotLevel(learned) > mascotLevel(startLearned)) { await wait(400); setGrew(true); sfx.grow(); await play(A.ui('grow')) }
-      // bonus: let the child say it (forgiving – never a failure on the reward screen)
-      if (sayOk && alive.current) {
-        await wait(300); if (!alive.current) return; setMood('talk'); await play(A.ui('say_word')); setMood('idle')
-        setListening(true)
-        const r = await listen(5000)
-        setListening(false)
-        if (!r.error || r.error === 'no-speech') {
-          setMood('happy')
-          if (matches(STICKER_INFO[s].en, r.alts.length ? r.alts : [r.heard])) { sfx.happy(); burst(); await play(randomPraise()) }
-          else if (r.heard) { await play(A.ui('i_heard')); await wait(200); await play(A.sticker(s)) }
+    // every await goes through live(): if the screen was left, the whole chain aborts (nothing may speak on another screen)
+    const live = <T,>(p: Promise<T>) => p.then((v) => { if (!alive.current) throw new Error('left'); return v })
+    if (!ran.current) {
+      ran.current = true
+      ;(async () => {
+        await db.sessions.add(stats)
+        const have = new Set((await db.stickers.where('profileId').equals(profile!.id).toArray()).map((s) => s.stickerId))
+        const left = STICKERS.filter((s) => !have.has(s))
+        const s = left.length ? left[Math.floor(Math.random() * left.length)] : STICKERS[Math.floor(Math.random() * STICKERS.length)]
+        await db.stickers.put({ id: `${profile!.id}:${s}`, profileId: profile!.id, stickerId: s, earnedAt: Date.now() })
+        preload([A.sticker(s), A.stickerHe(s), A.ui('say_word'), A.ui('i_heard')])
+        await live(playSeq([A.ui('all_done')]))
+        setSticker(s); sfx.sticker(); burst()
+        await live(wait(300)); await live(play(A.ui('sticker')))
+        // teach the word: "Octopus... תמנון... Octopus!"
+        await live(wait(400)); setMood('talk'); await live(sayName(s)); setMood('happy')
+        if (mascotLevel(learned) > mascotLevel(startLearned)) { await live(wait(400)); setGrew(true); sfx.grow(); await live(play(A.ui('grow'))) }
+        // bonus: let the child say it (forgiving – never a failure on the reward screen)
+        if (sayOk) {
+          await live(wait(300)); setMood('talk'); await live(play(A.ui('say_word'))); setMood('idle')
+          setListening(true)
+          const r = await live(listen(5000))
+          setListening(false)
+          if (!r.error || r.error === 'no-speech') {
+            setMood('happy')
+            if (matches(STICKER_INFO[s].en, r.alts.length ? r.alts : [r.heard])) { sfx.happy(); burst(); await live(play(randomPraise())) }
+            else if (r.heard) { await live(play(A.ui('i_heard'))); await live(wait(200)); await live(play(A.sticker(s))) }
+          }
         }
-      }
-    })()
-    return () => stop()
+      })().catch(() => { /* left the screen */ })
+    }
+    return () => { alive.current = false; abortListen(); stop() }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="screen" style={{ background: 'linear-gradient(#fff9c4,#ffe0b2)', gap: 24 }}>

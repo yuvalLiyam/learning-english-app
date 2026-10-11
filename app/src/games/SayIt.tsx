@@ -4,7 +4,7 @@ import type { Round } from '../lib/learning'
 import { burst, randomPraise } from '../components/Common'
 import GameFrame from '../components/GameFrame'
 import { play, playSeq, sfx, stop, wait } from '../lib/audio'
-import { listen, matches } from '../lib/speech'
+import { listen, matches, abortListen } from '../lib/speech'
 import type { GameProps } from './types'
 
 type R = Extract<Round, { game: 'say' }>
@@ -41,13 +41,18 @@ export default function SayIt({ round, index, total, onDone, onHome }: GameProps
       }
       tries.current++
       if (tries.current >= 2) {
-        setMood('talk'); await play(A.ui('i_heard')); await wait(200); await play(A.word(t.id)); await wait(600)
-        onDone([{ wordId: t.id, correct: false }]); return
+        setMood('talk'); await play(A.ui('i_heard')); await wait(200)
+        if (!alive.current) return
+        await play(A.word(t.id)); await wait(600)
+        if (alive.current) onDone([{ wordId: t.id, correct: false }])
+        return
       }
-      setState('wrong'); setMood('sad'); sfx.oops(); await play(A.ui('almost')); setState(''); await wait(300)
+      setState('wrong'); setMood('sad'); sfx.oops(); await play(A.ui('almost'))
+      if (!alive.current) return
+      setState(''); await wait(300)
     }
   }
-  useEffect(() => { alive.current = true; run(); return () => { alive.current = false; stop() } }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { alive.current = true; run(); return () => { alive.current = false; abortListen(); stop() } }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <GameFrame mood={mood} index={index} total={total} onHome={onHome}>

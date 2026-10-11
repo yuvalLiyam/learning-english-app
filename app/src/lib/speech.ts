@@ -12,6 +12,10 @@ const getSR = (): SR | undefined => {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition
 }
 
+let current: SRInstance | null = null
+/** Stop any running recognizer (called on every screen change / unmount). */
+export function abortListen() { try { current?.stop() } catch { /* noop */ } current = null }
+
 export const speechSupported = () => !!getSR() && navigator.onLine
 
 export type ListenResult = { status: 'match' | 'nomatch' | 'nospeech' | 'error'; heard: string }
@@ -20,7 +24,9 @@ export function listen(timeoutMs = 6000): Promise<{ heard: string; alts: string[
   return new Promise((resolve) => {
     const SRc = getSR()
     if (!SRc) return resolve({ heard: '', alts: [], error: 'unsupported' })
+    abortListen()
     const r = new SRc()
+    current = r
     r.lang = 'en-US'
     r.interimResults = false
     r.maxAlternatives = 5

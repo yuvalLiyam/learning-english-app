@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { A, img, wordImg, isPhoto, type Word } from '../content'
 import { play, playSeq, sfx, stop, wait } from '../lib/audio'
-import { listen, matches } from '../lib/speech'
+import { listen, matches, abortListen } from '../lib/speech'
 import { useApp } from '../lib/state'
 import { mascotLevel } from '../lib/learning'
 import Mascot from '../components/Mascot'
@@ -51,7 +51,7 @@ export default function Teach({ word, onDone, onHome }: { word: Word; onDone: (w
       await wait(1200)
       if (alive.current) onDone(word)
     })()
-    return () => { alive.current = false; stop() }
+    return () => { alive.current = false; abortListen(); stop() }
   }, [word]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
